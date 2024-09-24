@@ -1,27 +1,48 @@
 class Solution {
+    Trie root = new Trie();
+
+    class Trie{
+        Trie[] arr = new Trie[10];
+    }
+
     public int longestCommonPrefix(int[] arr1, int[] arr2) {
-        Set<Integer> hs = new HashSet<>();
-        for(int num : arr1){
-            while(num>0){
-                hs.add(num);
-                num/=10;
-            }
+        int ans = Integer.MIN_VALUE;
+        Trie curr = root;
+        for(int a: arr1){
+            insert(a);
         }
 
-        int res = Integer.MIN_VALUE;
-        for(int num : arr2){
-            while(num>0){
-                if(hs.contains(num)){
-                    res = Math.max(res, num);
-                    break;
-                }
-                num/=10;
-            }
+        for(int a : arr2){
+            int len = search(a);
+            ans = Math.max(ans, len);
         }
+        return ans;
+    }
 
-        if(res == Integer.MIN_VALUE) return 0;
-        StringBuilder str = new StringBuilder(String.valueOf(res));
-        return str.length();
-
+    private void insert(int i){
+        Trie curr = root;
+        String str = String.valueOf(i);
+        char[] ch = str.toCharArray();
+        for(int j = 0; j<ch.length; j++){
+            if(curr.arr[ch[j]-'0'] == null){
+                curr.arr[ch[j]-'0'] = new Trie();
+            }
+            curr = curr.arr[ch[j]-'0'];
+        }
+    }
+    
+    private int search(int i){
+        int len = 0;
+        Trie curr = root;
+        String str = String.valueOf(i);
+        char[] ch = str.toCharArray();
+        for(int j = 0; j<ch.length; j++){
+            if(curr.arr[ch[j]-'0'] == null){
+                break;
+            }
+            len++;
+            curr = curr.arr[ch[j]-'0'];
+        }
+        return len;
     }
 }
