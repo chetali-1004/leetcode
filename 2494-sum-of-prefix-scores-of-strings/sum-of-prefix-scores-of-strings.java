@@ -31,11 +31,18 @@ class Solution {
     private int getVal(String str){
         Trie curr = root;
         int cnt = 0;
-        for(char ch : str.toCharArray()){
-            if(curr.arr[ch-'a'] == null) return cnt;
-            curr = curr.arr[ch-'a'];
-            cnt += curr.count;
-        }
+        for (int j = 0; j < str.length(); j++) {
+                int idx = str.charAt(j) - 'a';
+                curr = curr.arr[idx];
+
+                if (curr.count == 1) {
+                    cnt += str.length() - j;
+                    break;
+                }
+
+                cnt += curr.count;
+            }
+        
         return cnt;
     }
 }
