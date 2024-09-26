@@ -1,5 +1,5 @@
 class MyCalendar {
-    PriorityQueue<Pair> pq;
+    Queue<Pair> pq;
 
     class Pair{
         int s;
@@ -12,7 +12,7 @@ class MyCalendar {
 
     
     public MyCalendar() {
-        pq = new PriorityQueue<>((p1,p2)->(p1.s - p2.s));
+        pq = new LinkedList<>();
     }
     
     public boolean book(int start, int end) {
