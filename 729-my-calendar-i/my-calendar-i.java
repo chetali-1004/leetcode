@@ -1,14 +1,27 @@
 class MyCalendar {
-    Map<Integer, Integer> mp;
+    PriorityQueue<Pair> pq;
+
+    class Pair{
+        int s;
+        int e;
+        public Pair(int s, int e){
+            this.s = s;
+            this.e = e;
+        }
+    }
+
+    
     public MyCalendar() {
-        mp = new HashMap<>();
+        pq = new PriorityQueue<>((p1,p2)->(p1.s - p2.s));
     }
     
     public boolean book(int start, int end) {
-        for(Integer s : mp.keySet()){
-            if(s<end && mp.get(s)>start) return false;
+        Iterator<Pair> it = pq.iterator();
+        while(it.hasNext()){
+            Pair p = it.next();
+            if(p.s < end && p.e > start) return false;
         }
-        mp.put(start, end);
+        pq.offer(new Pair(start, end));
         return true;
     }
 }
