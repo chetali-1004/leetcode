@@ -1,59 +1,39 @@
 class Solution {
     public double[] calcEquation(List<List<String>> equations, double[] values, List<List<String>> queries) {
-        Map<String, Integer> mp = new HashMap<>();
-        int ind = 0;
-        for(List<String> ls : equations){
-            if(!mp.containsKey(ls.get(0))){
-                mp.put(ls.get(0), ind++);
-            }
-            if(!mp.containsKey(ls.get(1))){
-                mp.put(ls.get(1), ind++);
-            }
-        }
+        Map<String, Map<String, Double>> mp = new HashMap<>();
+        for(int i = 0; i<equations.size(); i++){
+            String u = equations.get(i).get(0);
+            String v = equations.get(i).get(1);
 
-        int n = ind;
-        double[][] dist = new double[n][n];
-        for(double[] d : dist) Arrays.fill(d, Double.MAX_VALUE);
-
-        ind = 0;
-        for(List<String> ls : equations){
-            int u = mp.get(ls.get(0));
-            int v = mp.get(ls.get(1));
-            double val = values[ind++];
-            dist[u][v] = val;
-            dist[v][u] = 1/val;
-        }
-
-        for(int via = 0; via<n; via++){
-            for(int i = 0; i<n; i++){
-                for(int j = 0; j<n; j++){
-                    if(i!=via && j!=via){
-                        if(dist[i][via]!=Double.MAX_VALUE && dist[via][j]!=Double.MAX_VALUE){
-                            dist[i][j] = Math.min(dist[i][j], dist[i][via] * dist[via][j]);
-                        }
-                    }
-                }
+            if(!mp.containsKey(u)){
+                mp.put(u, new HashMap<>());
             }
+            if(!mp.containsKey(v)){
+                mp.put(v, new HashMap<>());
+            }
+            mp.get(u).put(v,values[i]);
+            mp.get(v).put(u,1/values[i]);
         }
 
         double[] sol = new double[queries.size()];
-        ind = 0;
-        for(List<String> q : queries){
-            if(mp.containsKey(q.get(0)) && mp.containsKey(q.get(1))){
-                int u = mp.get(q.get(0));
-                int v = mp.get(q.get(1));
-                double val = dist[u][v];
-                if(val == Double.MAX_VALUE){
-                    sol[ind++] = -1.0;
-                }
-                else{
-                    sol[ind++] = val;
-                }
-            }
-            else{
-                sol[ind++] = -1.0;
-            }
+        for(int i = 0; i<queries.size(); i++){
+            sol[i] = dfs(queries.get(i).get(0), queries.get(i).get(1), new HashSet<>(), mp);
         }
         return sol;
-    }   
+    }
+
+    private double dfs(String src, String dest, Set<String> vis, Map<String, Map<String, Double>> mp){
+        if(!mp.containsKey(src)) return -1.0;
+        if(mp.get(src).containsKey(dest)){
+            return mp.get(src).get(dest);
+        }
+        vis.add(src);
+        for(Map.Entry<String, Double> neigh : mp.get(src).entrySet()){
+            if(!vis.contains(neigh.getKey())){
+                double weight = dfs(neigh.getKey(), dest, vis, mp);
+                if(weight!=-1.0) return neigh.getValue()*weight;
+            }
+        }
+        return -1.0;
+    }
 }
