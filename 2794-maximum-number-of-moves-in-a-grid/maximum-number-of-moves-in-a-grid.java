@@ -4,9 +4,8 @@ class Solution {
         int n = grid.length;
         int m = grid[0].length;
         int[][] dp = new int[n][m];
-        
+        for(int[] arr : dp) Arrays.fill(arr,-1);
         for(int i = 0; i<n; i++){
-            for(int[] arr : dp) Arrays.fill(arr,-1);
             moves = Math.max(moves, helper(grid, i, 0, n, m, -1, dp));
         }
         return moves-1;
