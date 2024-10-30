@@ -21,9 +21,9 @@ class Solution {
         sb = new StringBuilder();
         helper(root);
         int sum = 0;
-        for(int i = 0; i<ls.size(); i++){
-            System.out.println(Integer.parseInt(ls.get(i)));
-        }
+        // for(int i = 0; i<ls.size(); i++){
+        //     System.out.println(Integer.parseInt(ls.get(i)));
+        // }
         for(int i = 0; i<ls.size(); i++){
             sum += Integer.parseInt(ls.get(i));
         }
