@@ -9,7 +9,7 @@ class Solution {
             int val = candidates[i];
             while(val>0){
                 bitarr[k] += (val&1);
-                val = val>>1;
+                val /= 2;
                 max = Math.max(max, bitarr[k]);
                 k++;
             }
