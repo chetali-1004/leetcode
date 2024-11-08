@@ -1,21 +1,20 @@
 class Solution {
-    private Map<String, Boolean> mp = new HashMap<>();
     public boolean wordBreak(String s, List<String> wordDict) {
-        Set<String> hs = new HashSet<>(wordDict);
-        return helper(s, hs);
+        Boolean[] dp = new Boolean[s.length()+1];
+        Arrays.fill(dp, null);
+        return helper(s, wordDict, 0, dp);
     }
-
-    private boolean helper(String s, Set<String> hs){
-        if(s.isEmpty()) return true;
-        if(mp.containsKey(s)) return mp.get(s);
-        for(int i = 1; i<=s.length(); i++){
-            String substr = s.substring(0,i);
-            if(hs.contains(substr)){
-                mp.put(substr, true);
-                if(helper(s.substring(i), hs)) return true;
+    private boolean helper(String s, List<String> wordDict, int i, Boolean[] dp){
+        if(i==s.length()) return true;
+        if(dp[i]!=null) return dp[i];
+        for(int j = 0; j<wordDict.size(); j++){
+            String word = wordDict.get(j);
+            if(s.startsWith(word,i)){
+                dp[i] = true;
+                if(helper(s, wordDict, i+word.length(), dp)) return true;
             }
         }
-        mp.put(s, false);
+        dp[i] = false;
         return false;
     }
 }
