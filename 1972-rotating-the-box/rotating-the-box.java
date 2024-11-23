@@ -7,10 +7,12 @@ class Solution {
             for(int j = m-1; j>=0; j--){
                 if(box[i][j] == '#'){
                     int pos = j;
+                    boolean flag = false;
                     while(pos+1<m && box[i][pos+1]=='.'){
+                        flag = true;
                         pos++;
                     }
-                    if(pos!=j){
+                    if(flag){
                         box[i][pos] = '#';
                         box[i][j] = '.'; 
                     }
