@@ -21,14 +21,14 @@ class Solution {
         q.offer(root);
         while(!q.isEmpty()){
             int size = q.size();
-            long maxele = Long.MIN_VALUE;
+            int maxi = Integer.MIN_VALUE;
             for(int i = 0; i<size; i++){
                 TreeNode front = q.poll();
-                maxele = (long)Math.max(maxele, front.val);
+                maxi = Math.max(maxi, front.val);
                 if(front.left!=null) q.offer(front.left);
                 if(front.right!=null) q.offer(front.right);
             }
-            sol.add((int)maxele);
+            sol.add(maxi);
         }
         return sol;
     }
